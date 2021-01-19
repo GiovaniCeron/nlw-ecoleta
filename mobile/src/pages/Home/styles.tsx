@@ -40,6 +40,23 @@ const styles = StyleSheet.create({
       paddingHorizontal: 24,
       fontSize: 16,
     },
+
+    pickerContainer: {
+      flexDirection: "column",
+      marginBottom: 20,
+    },
+
+    pickerSelect: {
+      fontSize: 18,
+      fontFamily: 'Roboto_500Medium',
+      color: '#6C6C80',
+      marginTop: 20,
+      paddingHorizontal: 10,
+      paddingVertical: 12,
+      borderWidth: 2,
+      borderColor: '#fff',
+      backgroundColor: '#fff',
+    },
   
     button: {
       backgroundColor: '#34CB79',

@@ -1,16 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, Image, Text } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import RNPickerSelect from 'react-native-picker-select';
+
+import axios from 'axios';
 
 import styles from './styles';
+
+interface UF {
+    id: number;
+    nome: string;
+    sigla: string;
+}
+
+interface Cidade {
+    id: number;
+    nome: string;
+}
 
 const Home = () => {
     const naviation = useNavigation();
 
-    function handleNavigateToPoints(){
-        naviation.navigate('Points');
+    const [ufs, setUfs] = useState<UF[]>([]);
+    const [cidades, setCidades] = useState<Cidade[]>([]);
+    const [uf, setSelectedUF] = useState('0');
+    const [city, setSelectedCity] = useState('0');
+
+    useEffect(() => {
+        axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
+            setUfs(response.data);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`).then(response => {
+            setCidades(response.data);
+        });
+    }, [uf]);
+
+    function handleNavigateToPoints() {
+        naviation.navigate('Points', {uf, city});
     }
 
     return (
@@ -26,6 +57,26 @@ const Home = () => {
             </View>
 
             <View style={styles.footer}>
+
+                <View style={styles.pickerContainer}>
+                    <RNPickerSelect
+                        onValueChange={(value) => setSelectedUF(value)}
+                        
+                        style={{ inputAndroid: styles.pickerSelect }}
+                        items={
+                            ufs.map(uf => ({ label: uf.nome, value: uf.sigla }))
+                        }
+                    />
+
+                    <RNPickerSelect
+                        onValueChange={(value) => setSelectedCity(value)}
+                        style={{ inputAndroid: styles.pickerSelect }}
+                        items={
+                            cidades.map(cidade => ({ label: cidade.nome, value: cidade.nome }))
+                        }
+                    />
+                </View>
+
                 <RectButton style={styles.button} onPress={handleNavigateToPoints}>
                     <View style={styles.buttonIcon}>
                         <Text>
