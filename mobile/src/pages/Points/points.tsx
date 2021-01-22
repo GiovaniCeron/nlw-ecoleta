@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, ScrollView, Alert } from 'react-native';
+import { View, TouchableOpacity, Text, ScrollView, Alert, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps'
@@ -17,6 +17,7 @@ interface Item {
 interface Point {
     idpoint: number;
     image: string;
+    image_url: string;
     name: string;
     latitude: number;
     longitude: number;
@@ -124,7 +125,12 @@ const Point = () => {
                                         latitude: point.latitude,
                                         longitude: point.longitude,
                                     }}
-                                />
+                                >
+                                    <View style={styles.mapMarkerContainer}>
+                                        <Image style={styles.mapMarkerImage} source={{uri: point.image_url}} />
+                                        <Text style={styles.mapMarkerTitle}>{point.name}</Text>
+                                    </View>
+                                </Marker>
                             ))}
                         </MapView>
                     )}

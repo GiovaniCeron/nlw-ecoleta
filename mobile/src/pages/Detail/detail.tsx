@@ -19,6 +19,7 @@ interface PointData{
         whatshapp: number;
         city: string;
         uf: string;
+        image_url: string;
     };
     items: {
         title: string;
@@ -65,7 +66,7 @@ const Detail = () => {
                     <Feather name="arrow-left" size={20} color="#34cb79" />
                 </TouchableOpacity>
 
-                <Image style={styles.pointImage} source={{ uri: 'https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=667&q=80' }} />
+                <Image style={styles.pointImage} source={{ uri: point.point.image_url }} />
 
                 <Text style={styles.pointName}>{point.point.name}</Text>
                 <Text style={styles.pointItems}>

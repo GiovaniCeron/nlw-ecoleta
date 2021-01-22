@@ -8,6 +8,8 @@ import axios from 'axios';
 
 import './styles.css';
 
+import Dropzone from '../../components/Dropzone/dropzone';
+
 import logo from '../../assets/logo.svg';
 
 
@@ -40,6 +42,7 @@ const CreatePoint = () => {
         whatshapp: ''
     });
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
+    const [selectedFile, setSelectedFile] = useState<File>();
 
     useEffect(() => {
         api.get('items').then(response => {
@@ -83,33 +86,37 @@ const CreatePoint = () => {
     function handleSelectedItem(iditem: number) {
         const alreadySelected = selectedItems.findIndex(item => item === iditem);
 
-        if(alreadySelected >= 0){
+        if (alreadySelected >= 0) {
             const filterItems = selectedItems.filter(item => item !== iditem);
             setSelectedItems(filterItems);
-        }else{
+        } else {
             setSelectedItems([...selectedItems, iditem]);
         }
     }
 
-    async function handleSubmit(event: FormEvent){
+    async function handleSubmit(event: FormEvent) {
         event.preventDefault();
 
-        const {name, email, whatshapp} = formData;
+        const { name, email, whatshapp } = formData;
         const uf = selectedUF;
         const city = selectedCity;
-        const [latitude, longitude] = [-26.9976319,-51.2446501];
+        const [latitude, longitude] = [-26.9976319, -51.2446501];
         const items = selectedItems;
 
-        const data ={
-            name,
-            email,
-            whatshapp,
-            uf,
-            city,
-            latitude,
-            longitude,
-            items
-        } 
+        const data = new FormData();
+
+        data.append('name', name);
+        data.append('email', email);
+        data.append('whatshapp', whatshapp);
+        data.append('uf', uf);
+        data.append('city', city);
+        data.append('latitude', String(latitude));
+        data.append('longitude', String(longitude));
+        data.append('items', items.join(','));
+
+        if (selectedFile) {
+            data.append('image', selectedFile);
+        }
 
         await api.post('points', data);
 
@@ -128,6 +135,9 @@ const CreatePoint = () => {
 
             <form onSubmit={handleSubmit}>
                 <h1>Cadastro do <br />ponto de coleta</h1>
+
+                <Dropzone onFileUpload={setSelectedFile} />
+
                 <fieldset>
                     <legend>
                         <h2>Dados</h2>
@@ -223,8 +233,8 @@ const CreatePoint = () => {
 
                     <ul className="items-grid">
                         {items.map(item => (
-                            <li 
-                                key={item.iditem} 
+                            <li
+                                key={item.iditem}
                                 onClick={() => handleSelectedItem(item.iditem)}
                                 className={selectedItems.includes(item.iditem) ? 'selected' : ''}
                             >
