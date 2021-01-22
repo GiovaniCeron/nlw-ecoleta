@@ -27,3 +27,6 @@ frontend/yarn-error.log*
 
 #backend
 backend/node_modules
+backend/uploads/*
+!backend/uploads/static
+backend/src/database/database.sqlite
