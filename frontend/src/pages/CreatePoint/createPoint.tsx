@@ -17,6 +17,7 @@ import logo from '../../assets/logo.svg';
 interface Item {
     iditem: number;
     title: string;
+    image_url: string;
 };
 
 interface UF {
@@ -46,6 +47,7 @@ const CreatePoint = () => {
 
     useEffect(() => {
         api.get('items').then(response => {
+            console.log(response.data);
             setItems(response.data);
         });
     }, []);
@@ -238,7 +240,7 @@ const CreatePoint = () => {
                                 onClick={() => handleSelectedItem(item.iditem)}
                                 className={selectedItems.includes(item.iditem) ? 'selected' : ''}
                             >
-                                <img src="http://localhost:3333/uploads/lampadas.svg" alt={item.title} />
+                                <img src={item.image_url} alt={item.title} />
                                 <span>{item.title}</span>
                             </li>
                         ))}
