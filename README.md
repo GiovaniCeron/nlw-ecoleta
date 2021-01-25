@@ -6,7 +6,6 @@
 
 <div align="center">
 
-[![Status](https://img.shields.io/badge/status-building-yellow)]()
 [![GitHub Issues](https://img.shields.io/github/issues/GiovaniCeron/nlw-ecoleta)](https://github.com/GiovaniCeron/nlw-ecoleta/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/GiovaniCeron/nlw-ecoleta)](https://github.com/GiovaniCeron/nlw-ecoleta/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
@@ -69,7 +68,19 @@ $mobile/ npm install
 ```
 ## Executando <a name = "executando"></a>
 
-Primeiramente é necessário executar o backend que ficará respondendo as aplicações e devolvendo as ações requeridas.
+Primeiramente é necessário executar as migrations para criar o banco de dados e tabelas.
+
+```bash
+#Criando tabelas 
+$npm knex:migrate
+
+#Inserindo os dados necessários
+$npm knex:seed
+
+```
+Como banco de dados estamos usando [SQLite](sqlite.org). Para gerenciamento sugerimos a utilização de um SGBD como o [DBever](dbeaver.io) que é um dos melhores gerenciadores do mercado além de ser open source.
+
+Agora, podemos executar o backend que ficará respondendo as aplicações e devolvendo as ações requeridas.
 
 ```bash
 #Entrando na pasta backend 

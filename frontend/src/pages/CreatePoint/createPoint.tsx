@@ -1,19 +1,15 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import axios from 'axios';
 
 import api from '../../services/api';
-import axios from 'axios';
+import Dropzone from '../../components/Dropzone/dropzone';
 
 import './styles.css';
 
-import Dropzone from '../../components/Dropzone/dropzone';
-
-import logo from '../../assets/logo.svg';
-
-
-
+//Declaração das interfaces
 interface Item {
     iditem: number;
     title: string;
@@ -44,6 +40,8 @@ const CreatePoint = () => {
     });
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const [selectedFile, setSelectedFile] = useState<File>();
+
+    const history = useHistory();
 
     useEffect(() => {
         api.get('items').then(response => {
@@ -122,12 +120,14 @@ const CreatePoint = () => {
 
         await api.post('points', data);
 
+        history.push('/confirm-point');
+
     }
 
     return (
         <div id="page-create-point">
             <header>
-                <img src={logo} alt="" />
+                <img src={'../../assets/logo.svg'} alt="" />
 
                 <Link to="/">
                     <FiArrowLeft />
